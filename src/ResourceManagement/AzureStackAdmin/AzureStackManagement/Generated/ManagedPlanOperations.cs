@@ -135,7 +135,10 @@ namespace Microsoft.AzureStack.Management
                 url = url + Uri.EscapeDataString(parameters.Plan.Name);
             }
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -579,7 +582,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/providers/Microsoft.Subscriptions/plans/";
             url = url + Uri.EscapeDataString(planId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -727,7 +733,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/providers/Microsoft.Subscriptions/plans/";
             url = url + Uri.EscapeDataString(planId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -1064,7 +1073,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/metricdefinitions/";
             url = url + Uri.EscapeDataString(metricDefinitionId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             List<string> odataFilter = new List<string>();
             odataFilter.Add(Uri.EscapeDataString(filter));
             if (odataFilter.Count > 0)
@@ -1319,7 +1331,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/metrics/";
             url = url + Uri.EscapeDataString(metricId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             List<string> odataFilter = new List<string>();
             odataFilter.Add(Uri.EscapeDataString(filter));
             if (odataFilter.Count > 0)
@@ -1600,7 +1615,10 @@ namespace Microsoft.AzureStack.Management
             url = url + Uri.EscapeDataString(resourceGroupName);
             url = url + "/providers/Microsoft.Subscriptions/plans";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             queryParameters.Add("includeDetails=" + Uri.EscapeDataString(includeDetails.ToString().ToLower()));
             if (queryParameters.Count > 0)
             {
@@ -2205,7 +2223,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/providers/Microsoft.Subscriptions/plans";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             queryParameters.Add("includeDetails=" + Uri.EscapeDataString(includeDetails.ToString().ToLower()));
             if (queryParameters.Count > 0)
             {

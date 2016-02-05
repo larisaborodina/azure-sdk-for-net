@@ -116,7 +116,10 @@ namespace Microsoft.AzureStack.Management
                 url = url + Uri.EscapeDataString(parameters.ResourceGroup.Name);
             }
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -359,7 +362,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -488,7 +494,10 @@ namespace Microsoft.AzureStack.Management
                 url = url + Uri.EscapeDataString(resourceGroupName);
             }
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -672,7 +681,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -1065,7 +1077,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resources";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);

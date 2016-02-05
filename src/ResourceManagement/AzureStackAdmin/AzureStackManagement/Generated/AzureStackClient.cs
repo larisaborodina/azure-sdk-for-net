@@ -33,34 +33,55 @@ namespace Microsoft.AzureStack.Management
         private string _apiVersion;
         
         /// <summary>
-        /// Your documentation here.
+        /// Gets the API version.
         /// </summary>
         public string ApiVersion
         {
             get { return this._apiVersion; }
-            set { this._apiVersion = value; }
         }
         
         private Uri _baseUri;
         
         /// <summary>
-        /// Your documentation here.
+        /// Gets the URI used as the base for all cloud service requests.
         /// </summary>
         public Uri BaseUri
         {
             get { return this._baseUri; }
-            set { this._baseUri = value; }
         }
         
         private SubscriptionCloudCredentials _credentials;
         
         /// <summary>
-        /// Your documentation here.
+        /// Gets subscription credentials which uniquely identify Microsoft
+        /// Azure subscription. The subscription ID forms part of the URI for
+        /// every service call.
         /// </summary>
         public SubscriptionCloudCredentials Credentials
         {
             get { return this._credentials; }
-            set { this._credentials = value; }
+        }
+        
+        private int _longRunningOperationInitialTimeout;
+        
+        /// <summary>
+        /// Gets or sets the initial timeout for Long Running Operations.
+        /// </summary>
+        public int LongRunningOperationInitialTimeout
+        {
+            get { return this._longRunningOperationInitialTimeout; }
+            set { this._longRunningOperationInitialTimeout = value; }
+        }
+        
+        private int _longRunningOperationRetryTimeout;
+        
+        /// <summary>
+        /// Gets or sets the retry timeout for Long Running Operations.
+        /// </summary>
+        public int LongRunningOperationRetryTimeout
+        {
+            get { return this._longRunningOperationRetryTimeout; }
+            set { this._longRunningOperationRetryTimeout = value; }
         }
         
         private ICloudOperations _clouds;
@@ -355,39 +376,58 @@ namespace Microsoft.AzureStack.Management
             this._resourceProviders = new ResourceProviderOperations(this);
             this._shallowResources = new ShallowResourceOperations(this);
             this._subscriptions = new SubscriptionOperations(this);
+            this._apiVersion = "1.0";
+            this._longRunningOperationInitialTimeout = -1;
+            this._longRunningOperationRetryTimeout = -1;
             this.HttpClient.Timeout = TimeSpan.FromSeconds(300);
         }
         
         /// <summary>
         /// Initializes a new instance of the AzureStackClient class.
         /// </summary>
-        /// <param name='baseUri'>
-        /// Required. Your documentation here.
-        /// </param>
         /// <param name='credentials'>
-        /// Required. Your documentation here.
+        /// Required. Gets subscription credentials which uniquely identify
+        /// Microsoft Azure subscription. The subscription ID forms part of
+        /// the URI for every service call.
         /// </param>
-        /// <param name='apiVersion'>
-        /// Required. Your documentation here.
+        /// <param name='baseUri'>
+        /// Optional. Gets the URI used as the base for all cloud service
+        /// requests.
         /// </param>
-        public AzureStackClient(Uri baseUri, SubscriptionCloudCredentials credentials, string apiVersion)
+        public AzureStackClient(SubscriptionCloudCredentials credentials, Uri baseUri)
             : this()
         {
-            if (baseUri == null)
-            {
-                throw new ArgumentNullException("baseUri");
-            }
             if (credentials == null)
             {
                 throw new ArgumentNullException("credentials");
             }
-            if (apiVersion == null)
+            if (baseUri == null)
             {
-                throw new ArgumentNullException("apiVersion");
+                throw new ArgumentNullException("baseUri");
             }
-            this._baseUri = baseUri;
             this._credentials = credentials;
-            this._apiVersion = apiVersion;
+            this._baseUri = baseUri;
+            
+            this.Credentials.InitializeServiceClient(this);
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the AzureStackClient class.
+        /// </summary>
+        /// <param name='credentials'>
+        /// Required. Gets subscription credentials which uniquely identify
+        /// Microsoft Azure subscription. The subscription ID forms part of
+        /// the URI for every service call.
+        /// </param>
+        public AzureStackClient(SubscriptionCloudCredentials credentials)
+            : this()
+        {
+            if (credentials == null)
+            {
+                throw new ArgumentNullException("credentials");
+            }
+            this._credentials = credentials;
+            this._baseUri = null;
             
             this.Credentials.InitializeServiceClient(this);
         }
@@ -423,42 +463,64 @@ namespace Microsoft.AzureStack.Management
             this._resourceProviders = new ResourceProviderOperations(this);
             this._shallowResources = new ShallowResourceOperations(this);
             this._subscriptions = new SubscriptionOperations(this);
+            this._apiVersion = "1.0";
+            this._longRunningOperationInitialTimeout = -1;
+            this._longRunningOperationRetryTimeout = -1;
             this.HttpClient.Timeout = TimeSpan.FromSeconds(300);
         }
         
         /// <summary>
         /// Initializes a new instance of the AzureStackClient class.
         /// </summary>
-        /// <param name='baseUri'>
-        /// Required. Your documentation here.
-        /// </param>
         /// <param name='credentials'>
-        /// Required. Your documentation here.
+        /// Required. Gets subscription credentials which uniquely identify
+        /// Microsoft Azure subscription. The subscription ID forms part of
+        /// the URI for every service call.
         /// </param>
-        /// <param name='apiVersion'>
-        /// Required. Your documentation here.
+        /// <param name='baseUri'>
+        /// Optional. Gets the URI used as the base for all cloud service
+        /// requests.
         /// </param>
         /// <param name='httpClient'>
         /// The Http client
         /// </param>
-        public AzureStackClient(Uri baseUri, SubscriptionCloudCredentials credentials, string apiVersion, HttpClient httpClient)
+        public AzureStackClient(SubscriptionCloudCredentials credentials, Uri baseUri, HttpClient httpClient)
             : this(httpClient)
         {
-            if (baseUri == null)
-            {
-                throw new ArgumentNullException("baseUri");
-            }
             if (credentials == null)
             {
                 throw new ArgumentNullException("credentials");
             }
-            if (apiVersion == null)
+            if (baseUri == null)
             {
-                throw new ArgumentNullException("apiVersion");
+                throw new ArgumentNullException("baseUri");
             }
-            this._baseUri = baseUri;
             this._credentials = credentials;
-            this._apiVersion = apiVersion;
+            this._baseUri = baseUri;
+            
+            this.Credentials.InitializeServiceClient(this);
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the AzureStackClient class.
+        /// </summary>
+        /// <param name='credentials'>
+        /// Required. Gets subscription credentials which uniquely identify
+        /// Microsoft Azure subscription. The subscription ID forms part of
+        /// the URI for every service call.
+        /// </param>
+        /// <param name='httpClient'>
+        /// The Http client
+        /// </param>
+        public AzureStackClient(SubscriptionCloudCredentials credentials, HttpClient httpClient)
+            : this(httpClient)
+        {
+            if (credentials == null)
+            {
+                throw new ArgumentNullException("credentials");
+            }
+            this._credentials = credentials;
+            this._baseUri = null;
             
             this.Credentials.InitializeServiceClient(this);
         }
@@ -478,9 +540,11 @@ namespace Microsoft.AzureStack.Management
             {
                 AzureStackClient clonedClient = ((AzureStackClient)client);
                 
-                clonedClient._baseUri = this._baseUri;
                 clonedClient._credentials = this._credentials;
+                clonedClient._baseUri = this._baseUri;
                 clonedClient._apiVersion = this._apiVersion;
+                clonedClient._longRunningOperationInitialTimeout = this._longRunningOperationInitialTimeout;
+                clonedClient._longRunningOperationRetryTimeout = this._longRunningOperationRetryTimeout;
                 
                 clonedClient.Credentials.InitializeServiceClient(clonedClient);
             }

@@ -100,7 +100,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/plans/";
             url = url + Uri.EscapeDataString(planId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -320,7 +323,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/plans/";
             url = url + Uri.EscapeDataString(planName);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -555,7 +561,10 @@ namespace Microsoft.AzureStack.Management
             url = url + Uri.EscapeDataString(planName);
             url = url + "/estimatePrice";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -714,7 +723,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/plans";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);

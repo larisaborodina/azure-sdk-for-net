@@ -136,7 +136,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/providers/Microsoft.Gallery/mygalleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -290,7 +293,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/providers/Microsoft.Gallery/mygalleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -438,7 +444,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/providers/Microsoft.Gallery/mygalleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -813,7 +822,10 @@ namespace Microsoft.AzureStack.Management
             url = url + Uri.EscapeDataString(resourceGroupName);
             url = url + "/providers/Microsoft.Gallery/mygalleryitems";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -1543,7 +1555,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/providers/Microsoft.Gallery/mygalleryitems";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);

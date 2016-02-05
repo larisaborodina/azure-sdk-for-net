@@ -104,7 +104,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resources";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             List<string> odataFilter = new List<string>();
             odataFilter.Add("resourceType eq '" + Uri.EscapeDataString(resourceType) + "'");
             if (odataFilter.Count > 0)

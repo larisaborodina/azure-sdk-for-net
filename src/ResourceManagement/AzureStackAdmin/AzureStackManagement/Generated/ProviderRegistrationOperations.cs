@@ -137,7 +137,10 @@ namespace Microsoft.AzureStack.Management
                 url = url + Uri.EscapeDataString(parameters.ProviderRegistration.Name);
             }
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -1575,7 +1578,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/providers/Microsoft.Subscriptions/providerregistrations/";
             url = url + Uri.EscapeDataString(providerregistrationId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -1723,7 +1729,10 @@ namespace Microsoft.AzureStack.Management
             url = url + "/providers/Microsoft.Subscriptions/providerregistrations/";
             url = url + Uri.EscapeDataString(providerregistrationId);
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -2623,7 +2632,10 @@ namespace Microsoft.AzureStack.Management
             url = url + Uri.EscapeDataString(resourceGroupName);
             url = url + "/providers/Microsoft.Subscriptions/providerregistrations";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -4403,7 +4415,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/providers/Microsoft.Subscriptions/providerregistrations";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
@@ -5311,7 +5326,10 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/providers/Microsoft.Subscriptions/validateProviderRegistration";
             List<string> queryParameters = new List<string>();
-            queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            if (this.Client.ApiVersion != null)
+            {
+                queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
+            }
             if (queryParameters.Count > 0)
             {
                 url = url + "?" + string.Join("&", queryParameters);
