@@ -30,7 +30,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Hyak.Common;
-using Hyak.Common.Internals;
 using Microsoft.Azure;
 using Microsoft.AzureStack.Management;
 using Microsoft.AzureStack.Management.Models;
@@ -199,59 +198,19 @@ namespace Microsoft.AzureStack.Management
                         propertiesValue["externalReferenceId"] = parameters.Plan.Properties.ExternalReferenceId;
                     }
                     
-                    propertiesValue["state"] = parameters.Plan.Properties.State.ToString();
-                    
-                    propertiesValue["quotaSyncState"] = parameters.Plan.Properties.QuotaSyncState.ToString();
-                    
                     if (parameters.Plan.Properties.SubscriptionCount != null)
                     {
                         propertiesValue["subscriptionCount"] = parameters.Plan.Properties.SubscriptionCount.Value;
                     }
                     
-                    if (parameters.Plan.Properties.MaxOccurrencesPerOffer != null)
+                    if (parameters.Plan.Properties.QuotaIds != null)
                     {
-                        propertiesValue["maxOccurrencesPerOffer"] = parameters.Plan.Properties.MaxOccurrencesPerOffer.Value;
+                        propertiesValue["quotaIds"] = parameters.Plan.Properties.QuotaIds;
                     }
                     
-                    if (parameters.Plan.Properties.ServiceQuotas != null)
+                    if (parameters.Plan.Properties.SkuIds != null)
                     {
-                        if (parameters.Plan.Properties.ServiceQuotas is ILazyCollection == false || ((ILazyCollection)parameters.Plan.Properties.ServiceQuotas).IsInitialized)
-                        {
-                            JArray serviceQuotasArray = new JArray();
-                            foreach (ServiceQuotaDefinition serviceQuotasItem in parameters.Plan.Properties.ServiceQuotas)
-                            {
-                                JObject serviceQuotaDefinitionValue = new JObject();
-                                serviceQuotasArray.Add(serviceQuotaDefinitionValue);
-                                
-                                if (serviceQuotasItem.ResourceProviderId != null)
-                                {
-                                    serviceQuotaDefinitionValue["resourceProviderId"] = serviceQuotasItem.ResourceProviderId;
-                                }
-                                
-                                if (serviceQuotasItem.ResourceProviderNamespace != null)
-                                {
-                                    serviceQuotaDefinitionValue["resourceProviderNamespace"] = serviceQuotasItem.ResourceProviderNamespace;
-                                }
-                                
-                                if (serviceQuotasItem.ResourceProviderDisplayName != null)
-                                {
-                                    serviceQuotaDefinitionValue["resourceProviderDisplayName"] = serviceQuotasItem.ResourceProviderDisplayName;
-                                }
-                                
-                                if (serviceQuotasItem.Location != null)
-                                {
-                                    serviceQuotaDefinitionValue["location"] = serviceQuotasItem.Location;
-                                }
-                                
-                                serviceQuotaDefinitionValue["quotaSyncState"] = serviceQuotasItem.QuotaSyncState.ToString();
-                                
-                                if (serviceQuotasItem.QuotaSettings != null)
-                                {
-                                    serviceQuotaDefinitionValue["quotaSettings"] = JObject.Parse(serviceQuotasItem.QuotaSettings);
-                                }
-                            }
-                            propertiesValue["serviceQuotas"] = serviceQuotasArray;
-                        }
+                        propertiesValue["skuIds"] = parameters.Plan.Properties.SkuIds;
                     }
                 }
                 
@@ -339,7 +298,7 @@ namespace Microsoft.AzureStack.Management
                             JToken propertiesValue2 = responseDoc["properties"];
                             if (propertiesValue2 != null && propertiesValue2.Type != JTokenType.Null)
                             {
-                                AdminPlanDefinition propertiesInstance = new AdminPlanDefinition();
+                                AdminPlanPropertiesDefinition propertiesInstance = new AdminPlanPropertiesDefinition();
                                 planInstance.Properties = propertiesInstance;
                                 
                                 JToken nameValue = propertiesValue2["name"];
@@ -370,20 +329,6 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.ExternalReferenceId = externalReferenceIdInstance;
                                 }
                                 
-                                JToken stateValue = propertiesValue2["state"];
-                                if (stateValue != null && stateValue.Type != JTokenType.Null)
-                                {
-                                    AccessibilityState stateInstance = ((AccessibilityState)Enum.Parse(typeof(AccessibilityState), ((string)stateValue), true));
-                                    propertiesInstance.State = stateInstance;
-                                }
-                                
-                                JToken quotaSyncStateValue = propertiesValue2["quotaSyncState"];
-                                if (quotaSyncStateValue != null && quotaSyncStateValue.Type != JTokenType.Null)
-                                {
-                                    QuotaSyncState quotaSyncStateInstance = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue), true));
-                                    propertiesInstance.QuotaSyncState = quotaSyncStateInstance;
-                                }
-                                
                                 JToken subscriptionCountValue = propertiesValue2["subscriptionCount"];
                                 if (subscriptionCountValue != null && subscriptionCountValue.Type != JTokenType.Null)
                                 {
@@ -391,63 +336,18 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                 }
                                 
-                                JToken maxOccurrencesPerOfferValue = propertiesValue2["maxOccurrencesPerOffer"];
-                                if (maxOccurrencesPerOfferValue != null && maxOccurrencesPerOfferValue.Type != JTokenType.Null)
+                                JToken quotaIdsValue = propertiesValue2["quotaIds"];
+                                if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
                                 {
-                                    int maxOccurrencesPerOfferInstance = ((int)maxOccurrencesPerOfferValue);
-                                    propertiesInstance.MaxOccurrencesPerOffer = maxOccurrencesPerOfferInstance;
+                                    String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
+                                    propertiesInstance.QuotaIds = quotaIdsInstance;
                                 }
                                 
-                                JToken serviceQuotasArray2 = propertiesValue2["serviceQuotas"];
-                                if (serviceQuotasArray2 != null && serviceQuotasArray2.Type != JTokenType.Null)
+                                JToken skuIdsValue = propertiesValue2["skuIds"];
+                                if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken serviceQuotasValue in ((JArray)serviceQuotasArray2))
-                                    {
-                                        ServiceQuotaDefinition serviceQuotaDefinitionInstance = new ServiceQuotaDefinition();
-                                        propertiesInstance.ServiceQuotas.Add(serviceQuotaDefinitionInstance);
-                                        
-                                        JToken resourceProviderIdValue = serviceQuotasValue["resourceProviderId"];
-                                        if (resourceProviderIdValue != null && resourceProviderIdValue.Type != JTokenType.Null)
-                                        {
-                                            string resourceProviderIdInstance = ((string)resourceProviderIdValue);
-                                            serviceQuotaDefinitionInstance.ResourceProviderId = resourceProviderIdInstance;
-                                        }
-                                        
-                                        JToken resourceProviderNamespaceValue = serviceQuotasValue["resourceProviderNamespace"];
-                                        if (resourceProviderNamespaceValue != null && resourceProviderNamespaceValue.Type != JTokenType.Null)
-                                        {
-                                            string resourceProviderNamespaceInstance = ((string)resourceProviderNamespaceValue);
-                                            serviceQuotaDefinitionInstance.ResourceProviderNamespace = resourceProviderNamespaceInstance;
-                                        }
-                                        
-                                        JToken resourceProviderDisplayNameValue = serviceQuotasValue["resourceProviderDisplayName"];
-                                        if (resourceProviderDisplayNameValue != null && resourceProviderDisplayNameValue.Type != JTokenType.Null)
-                                        {
-                                            string resourceProviderDisplayNameInstance = ((string)resourceProviderDisplayNameValue);
-                                            serviceQuotaDefinitionInstance.ResourceProviderDisplayName = resourceProviderDisplayNameInstance;
-                                        }
-                                        
-                                        JToken locationValue = serviceQuotasValue["location"];
-                                        if (locationValue != null && locationValue.Type != JTokenType.Null)
-                                        {
-                                            string locationInstance = ((string)locationValue);
-                                            serviceQuotaDefinitionInstance.Location = locationInstance;
-                                        }
-                                        
-                                        JToken quotaSyncStateValue2 = serviceQuotasValue["quotaSyncState"];
-                                        if (quotaSyncStateValue2 != null && quotaSyncStateValue2.Type != JTokenType.Null)
-                                        {
-                                            QuotaSyncState quotaSyncStateInstance2 = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue2), true));
-                                            serviceQuotaDefinitionInstance.QuotaSyncState = quotaSyncStateInstance2;
-                                        }
-                                        
-                                        JToken quotaSettingsValue = serviceQuotasValue["quotaSettings"];
-                                        if (quotaSettingsValue != null && quotaSettingsValue.Type != JTokenType.Null)
-                                        {
-                                            string quotaSettingsInstance = quotaSettingsValue.ToString(Newtonsoft.Json.Formatting.Indented);
-                                            serviceQuotaDefinitionInstance.QuotaSettings = quotaSettingsInstance;
-                                        }
-                                    }
+                                    String[]<string> skuIdsInstance = ((string)skuIdsValue);
+                                    propertiesInstance.SkuIds = skuIdsInstance;
                                 }
                             }
                             
@@ -472,11 +372,11 @@ namespace Microsoft.AzureStack.Management
                                 planInstance.Type = typeInstance;
                             }
                             
-                            JToken locationValue2 = responseDoc["location"];
-                            if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
+                            JToken locationValue = responseDoc["location"];
+                            if (locationValue != null && locationValue.Type != JTokenType.Null)
                             {
-                                string locationInstance2 = ((string)locationValue2);
-                                planInstance.Location = locationInstance2;
+                                string locationInstance = ((string)locationValue);
+                                planInstance.Location = locationInstance;
                             }
                             
                             JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
@@ -807,7 +707,7 @@ namespace Microsoft.AzureStack.Management
                             JToken propertiesValue = responseDoc["properties"];
                             if (propertiesValue != null && propertiesValue.Type != JTokenType.Null)
                             {
-                                AdminPlanDefinition propertiesInstance = new AdminPlanDefinition();
+                                AdminPlanPropertiesDefinition propertiesInstance = new AdminPlanPropertiesDefinition();
                                 planInstance.Properties = propertiesInstance;
                                 
                                 JToken nameValue = propertiesValue["name"];
@@ -838,20 +738,6 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.ExternalReferenceId = externalReferenceIdInstance;
                                 }
                                 
-                                JToken stateValue = propertiesValue["state"];
-                                if (stateValue != null && stateValue.Type != JTokenType.Null)
-                                {
-                                    AccessibilityState stateInstance = ((AccessibilityState)Enum.Parse(typeof(AccessibilityState), ((string)stateValue), true));
-                                    propertiesInstance.State = stateInstance;
-                                }
-                                
-                                JToken quotaSyncStateValue = propertiesValue["quotaSyncState"];
-                                if (quotaSyncStateValue != null && quotaSyncStateValue.Type != JTokenType.Null)
-                                {
-                                    QuotaSyncState quotaSyncStateInstance = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue), true));
-                                    propertiesInstance.QuotaSyncState = quotaSyncStateInstance;
-                                }
-                                
                                 JToken subscriptionCountValue = propertiesValue["subscriptionCount"];
                                 if (subscriptionCountValue != null && subscriptionCountValue.Type != JTokenType.Null)
                                 {
@@ -859,63 +745,18 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                 }
                                 
-                                JToken maxOccurrencesPerOfferValue = propertiesValue["maxOccurrencesPerOffer"];
-                                if (maxOccurrencesPerOfferValue != null && maxOccurrencesPerOfferValue.Type != JTokenType.Null)
+                                JToken quotaIdsValue = propertiesValue["quotaIds"];
+                                if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
                                 {
-                                    int maxOccurrencesPerOfferInstance = ((int)maxOccurrencesPerOfferValue);
-                                    propertiesInstance.MaxOccurrencesPerOffer = maxOccurrencesPerOfferInstance;
+                                    String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
+                                    propertiesInstance.QuotaIds = quotaIdsInstance;
                                 }
                                 
-                                JToken serviceQuotasArray = propertiesValue["serviceQuotas"];
-                                if (serviceQuotasArray != null && serviceQuotasArray.Type != JTokenType.Null)
+                                JToken skuIdsValue = propertiesValue["skuIds"];
+                                if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
                                 {
-                                    foreach (JToken serviceQuotasValue in ((JArray)serviceQuotasArray))
-                                    {
-                                        ServiceQuotaDefinition serviceQuotaDefinitionInstance = new ServiceQuotaDefinition();
-                                        propertiesInstance.ServiceQuotas.Add(serviceQuotaDefinitionInstance);
-                                        
-                                        JToken resourceProviderIdValue = serviceQuotasValue["resourceProviderId"];
-                                        if (resourceProviderIdValue != null && resourceProviderIdValue.Type != JTokenType.Null)
-                                        {
-                                            string resourceProviderIdInstance = ((string)resourceProviderIdValue);
-                                            serviceQuotaDefinitionInstance.ResourceProviderId = resourceProviderIdInstance;
-                                        }
-                                        
-                                        JToken resourceProviderNamespaceValue = serviceQuotasValue["resourceProviderNamespace"];
-                                        if (resourceProviderNamespaceValue != null && resourceProviderNamespaceValue.Type != JTokenType.Null)
-                                        {
-                                            string resourceProviderNamespaceInstance = ((string)resourceProviderNamespaceValue);
-                                            serviceQuotaDefinitionInstance.ResourceProviderNamespace = resourceProviderNamespaceInstance;
-                                        }
-                                        
-                                        JToken resourceProviderDisplayNameValue = serviceQuotasValue["resourceProviderDisplayName"];
-                                        if (resourceProviderDisplayNameValue != null && resourceProviderDisplayNameValue.Type != JTokenType.Null)
-                                        {
-                                            string resourceProviderDisplayNameInstance = ((string)resourceProviderDisplayNameValue);
-                                            serviceQuotaDefinitionInstance.ResourceProviderDisplayName = resourceProviderDisplayNameInstance;
-                                        }
-                                        
-                                        JToken locationValue = serviceQuotasValue["location"];
-                                        if (locationValue != null && locationValue.Type != JTokenType.Null)
-                                        {
-                                            string locationInstance = ((string)locationValue);
-                                            serviceQuotaDefinitionInstance.Location = locationInstance;
-                                        }
-                                        
-                                        JToken quotaSyncStateValue2 = serviceQuotasValue["quotaSyncState"];
-                                        if (quotaSyncStateValue2 != null && quotaSyncStateValue2.Type != JTokenType.Null)
-                                        {
-                                            QuotaSyncState quotaSyncStateInstance2 = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue2), true));
-                                            serviceQuotaDefinitionInstance.QuotaSyncState = quotaSyncStateInstance2;
-                                        }
-                                        
-                                        JToken quotaSettingsValue = serviceQuotasValue["quotaSettings"];
-                                        if (quotaSettingsValue != null && quotaSettingsValue.Type != JTokenType.Null)
-                                        {
-                                            string quotaSettingsInstance = quotaSettingsValue.ToString(Newtonsoft.Json.Formatting.Indented);
-                                            serviceQuotaDefinitionInstance.QuotaSettings = quotaSettingsInstance;
-                                        }
-                                    }
+                                    String[]<string> skuIdsInstance = ((string)skuIdsValue);
+                                    propertiesInstance.SkuIds = skuIdsInstance;
                                 }
                             }
                             
@@ -940,11 +781,11 @@ namespace Microsoft.AzureStack.Management
                                 planInstance.Type = typeInstance;
                             }
                             
-                            JToken locationValue2 = responseDoc["location"];
-                            if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
+                            JToken locationValue = responseDoc["location"];
+                            if (locationValue != null && locationValue.Type != JTokenType.Null)
                             {
-                                string locationInstance2 = ((string)locationValue2);
-                                planInstance.Location = locationInstance2;
+                                string locationInstance = ((string)locationValue);
+                                planInstance.Location = locationInstance;
                             }
                             
                             JToken tagsSequenceElement = ((JToken)responseDoc["tags"]);
@@ -1686,7 +1527,7 @@ namespace Microsoft.AzureStack.Management
                                     JToken propertiesValue = valueValue["properties"];
                                     if (propertiesValue != null && propertiesValue.Type != JTokenType.Null)
                                     {
-                                        AdminPlanDefinition propertiesInstance = new AdminPlanDefinition();
+                                        AdminPlanPropertiesDefinition propertiesInstance = new AdminPlanPropertiesDefinition();
                                         adminPlanModelInstance.Properties = propertiesInstance;
                                         
                                         JToken nameValue = propertiesValue["name"];
@@ -1717,20 +1558,6 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.ExternalReferenceId = externalReferenceIdInstance;
                                         }
                                         
-                                        JToken stateValue = propertiesValue["state"];
-                                        if (stateValue != null && stateValue.Type != JTokenType.Null)
-                                        {
-                                            AccessibilityState stateInstance = ((AccessibilityState)Enum.Parse(typeof(AccessibilityState), ((string)stateValue), true));
-                                            propertiesInstance.State = stateInstance;
-                                        }
-                                        
-                                        JToken quotaSyncStateValue = propertiesValue["quotaSyncState"];
-                                        if (quotaSyncStateValue != null && quotaSyncStateValue.Type != JTokenType.Null)
-                                        {
-                                            QuotaSyncState quotaSyncStateInstance = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue), true));
-                                            propertiesInstance.QuotaSyncState = quotaSyncStateInstance;
-                                        }
-                                        
                                         JToken subscriptionCountValue = propertiesValue["subscriptionCount"];
                                         if (subscriptionCountValue != null && subscriptionCountValue.Type != JTokenType.Null)
                                         {
@@ -1738,63 +1565,18 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                         }
                                         
-                                        JToken maxOccurrencesPerOfferValue = propertiesValue["maxOccurrencesPerOffer"];
-                                        if (maxOccurrencesPerOfferValue != null && maxOccurrencesPerOfferValue.Type != JTokenType.Null)
+                                        JToken quotaIdsValue = propertiesValue["quotaIds"];
+                                        if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
                                         {
-                                            int maxOccurrencesPerOfferInstance = ((int)maxOccurrencesPerOfferValue);
-                                            propertiesInstance.MaxOccurrencesPerOffer = maxOccurrencesPerOfferInstance;
+                                            String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
+                                            propertiesInstance.QuotaIds = quotaIdsInstance;
                                         }
                                         
-                                        JToken serviceQuotasArray = propertiesValue["serviceQuotas"];
-                                        if (serviceQuotasArray != null && serviceQuotasArray.Type != JTokenType.Null)
+                                        JToken skuIdsValue = propertiesValue["skuIds"];
+                                        if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
                                         {
-                                            foreach (JToken serviceQuotasValue in ((JArray)serviceQuotasArray))
-                                            {
-                                                ServiceQuotaDefinition serviceQuotaDefinitionInstance = new ServiceQuotaDefinition();
-                                                propertiesInstance.ServiceQuotas.Add(serviceQuotaDefinitionInstance);
-                                                
-                                                JToken resourceProviderIdValue = serviceQuotasValue["resourceProviderId"];
-                                                if (resourceProviderIdValue != null && resourceProviderIdValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderIdInstance = ((string)resourceProviderIdValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderId = resourceProviderIdInstance;
-                                                }
-                                                
-                                                JToken resourceProviderNamespaceValue = serviceQuotasValue["resourceProviderNamespace"];
-                                                if (resourceProviderNamespaceValue != null && resourceProviderNamespaceValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderNamespaceInstance = ((string)resourceProviderNamespaceValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderNamespace = resourceProviderNamespaceInstance;
-                                                }
-                                                
-                                                JToken resourceProviderDisplayNameValue = serviceQuotasValue["resourceProviderDisplayName"];
-                                                if (resourceProviderDisplayNameValue != null && resourceProviderDisplayNameValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderDisplayNameInstance = ((string)resourceProviderDisplayNameValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderDisplayName = resourceProviderDisplayNameInstance;
-                                                }
-                                                
-                                                JToken locationValue = serviceQuotasValue["location"];
-                                                if (locationValue != null && locationValue.Type != JTokenType.Null)
-                                                {
-                                                    string locationInstance = ((string)locationValue);
-                                                    serviceQuotaDefinitionInstance.Location = locationInstance;
-                                                }
-                                                
-                                                JToken quotaSyncStateValue2 = serviceQuotasValue["quotaSyncState"];
-                                                if (quotaSyncStateValue2 != null && quotaSyncStateValue2.Type != JTokenType.Null)
-                                                {
-                                                    QuotaSyncState quotaSyncStateInstance2 = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue2), true));
-                                                    serviceQuotaDefinitionInstance.QuotaSyncState = quotaSyncStateInstance2;
-                                                }
-                                                
-                                                JToken quotaSettingsValue = serviceQuotasValue["quotaSettings"];
-                                                if (quotaSettingsValue != null && quotaSettingsValue.Type != JTokenType.Null)
-                                                {
-                                                    string quotaSettingsInstance = quotaSettingsValue.ToString(Newtonsoft.Json.Formatting.Indented);
-                                                    serviceQuotaDefinitionInstance.QuotaSettings = quotaSettingsInstance;
-                                                }
-                                            }
+                                            String[]<string> skuIdsInstance = ((string)skuIdsValue);
+                                            propertiesInstance.SkuIds = skuIdsInstance;
                                         }
                                     }
                                     
@@ -1819,11 +1601,11 @@ namespace Microsoft.AzureStack.Management
                                         adminPlanModelInstance.Type = typeInstance;
                                     }
                                     
-                                    JToken locationValue2 = valueValue["location"];
-                                    if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
+                                    JToken locationValue = valueValue["location"];
+                                    if (locationValue != null && locationValue.Type != JTokenType.Null)
                                     {
-                                        string locationInstance2 = ((string)locationValue2);
-                                        adminPlanModelInstance.Location = locationInstance2;
+                                        string locationInstance = ((string)locationValue);
+                                        adminPlanModelInstance.Location = locationInstance;
                                     }
                                     
                                     JToken tagsSequenceElement = ((JToken)valueValue["tags"]);
@@ -1980,7 +1762,7 @@ namespace Microsoft.AzureStack.Management
                                     JToken propertiesValue = valueValue["properties"];
                                     if (propertiesValue != null && propertiesValue.Type != JTokenType.Null)
                                     {
-                                        AdminPlanDefinition propertiesInstance = new AdminPlanDefinition();
+                                        AdminPlanPropertiesDefinition propertiesInstance = new AdminPlanPropertiesDefinition();
                                         adminPlanModelInstance.Properties = propertiesInstance;
                                         
                                         JToken nameValue = propertiesValue["name"];
@@ -2011,20 +1793,6 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.ExternalReferenceId = externalReferenceIdInstance;
                                         }
                                         
-                                        JToken stateValue = propertiesValue["state"];
-                                        if (stateValue != null && stateValue.Type != JTokenType.Null)
-                                        {
-                                            AccessibilityState stateInstance = ((AccessibilityState)Enum.Parse(typeof(AccessibilityState), ((string)stateValue), true));
-                                            propertiesInstance.State = stateInstance;
-                                        }
-                                        
-                                        JToken quotaSyncStateValue = propertiesValue["quotaSyncState"];
-                                        if (quotaSyncStateValue != null && quotaSyncStateValue.Type != JTokenType.Null)
-                                        {
-                                            QuotaSyncState quotaSyncStateInstance = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue), true));
-                                            propertiesInstance.QuotaSyncState = quotaSyncStateInstance;
-                                        }
-                                        
                                         JToken subscriptionCountValue = propertiesValue["subscriptionCount"];
                                         if (subscriptionCountValue != null && subscriptionCountValue.Type != JTokenType.Null)
                                         {
@@ -2032,63 +1800,18 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                         }
                                         
-                                        JToken maxOccurrencesPerOfferValue = propertiesValue["maxOccurrencesPerOffer"];
-                                        if (maxOccurrencesPerOfferValue != null && maxOccurrencesPerOfferValue.Type != JTokenType.Null)
+                                        JToken quotaIdsValue = propertiesValue["quotaIds"];
+                                        if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
                                         {
-                                            int maxOccurrencesPerOfferInstance = ((int)maxOccurrencesPerOfferValue);
-                                            propertiesInstance.MaxOccurrencesPerOffer = maxOccurrencesPerOfferInstance;
+                                            String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
+                                            propertiesInstance.QuotaIds = quotaIdsInstance;
                                         }
                                         
-                                        JToken serviceQuotasArray = propertiesValue["serviceQuotas"];
-                                        if (serviceQuotasArray != null && serviceQuotasArray.Type != JTokenType.Null)
+                                        JToken skuIdsValue = propertiesValue["skuIds"];
+                                        if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
                                         {
-                                            foreach (JToken serviceQuotasValue in ((JArray)serviceQuotasArray))
-                                            {
-                                                ServiceQuotaDefinition serviceQuotaDefinitionInstance = new ServiceQuotaDefinition();
-                                                propertiesInstance.ServiceQuotas.Add(serviceQuotaDefinitionInstance);
-                                                
-                                                JToken resourceProviderIdValue = serviceQuotasValue["resourceProviderId"];
-                                                if (resourceProviderIdValue != null && resourceProviderIdValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderIdInstance = ((string)resourceProviderIdValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderId = resourceProviderIdInstance;
-                                                }
-                                                
-                                                JToken resourceProviderNamespaceValue = serviceQuotasValue["resourceProviderNamespace"];
-                                                if (resourceProviderNamespaceValue != null && resourceProviderNamespaceValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderNamespaceInstance = ((string)resourceProviderNamespaceValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderNamespace = resourceProviderNamespaceInstance;
-                                                }
-                                                
-                                                JToken resourceProviderDisplayNameValue = serviceQuotasValue["resourceProviderDisplayName"];
-                                                if (resourceProviderDisplayNameValue != null && resourceProviderDisplayNameValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderDisplayNameInstance = ((string)resourceProviderDisplayNameValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderDisplayName = resourceProviderDisplayNameInstance;
-                                                }
-                                                
-                                                JToken locationValue = serviceQuotasValue["location"];
-                                                if (locationValue != null && locationValue.Type != JTokenType.Null)
-                                                {
-                                                    string locationInstance = ((string)locationValue);
-                                                    serviceQuotaDefinitionInstance.Location = locationInstance;
-                                                }
-                                                
-                                                JToken quotaSyncStateValue2 = serviceQuotasValue["quotaSyncState"];
-                                                if (quotaSyncStateValue2 != null && quotaSyncStateValue2.Type != JTokenType.Null)
-                                                {
-                                                    QuotaSyncState quotaSyncStateInstance2 = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue2), true));
-                                                    serviceQuotaDefinitionInstance.QuotaSyncState = quotaSyncStateInstance2;
-                                                }
-                                                
-                                                JToken quotaSettingsValue = serviceQuotasValue["quotaSettings"];
-                                                if (quotaSettingsValue != null && quotaSettingsValue.Type != JTokenType.Null)
-                                                {
-                                                    string quotaSettingsInstance = quotaSettingsValue.ToString(Newtonsoft.Json.Formatting.Indented);
-                                                    serviceQuotaDefinitionInstance.QuotaSettings = quotaSettingsInstance;
-                                                }
-                                            }
+                                            String[]<string> skuIdsInstance = ((string)skuIdsValue);
+                                            propertiesInstance.SkuIds = skuIdsInstance;
                                         }
                                     }
                                     
@@ -2113,11 +1836,11 @@ namespace Microsoft.AzureStack.Management
                                         adminPlanModelInstance.Type = typeInstance;
                                     }
                                     
-                                    JToken locationValue2 = valueValue["location"];
-                                    if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
+                                    JToken locationValue = valueValue["location"];
+                                    if (locationValue != null && locationValue.Type != JTokenType.Null)
                                     {
-                                        string locationInstance2 = ((string)locationValue2);
-                                        adminPlanModelInstance.Location = locationInstance2;
+                                        string locationInstance = ((string)locationValue);
+                                        adminPlanModelInstance.Location = locationInstance;
                                     }
                                     
                                     JToken tagsSequenceElement = ((JToken)valueValue["tags"]);
@@ -2291,7 +2014,7 @@ namespace Microsoft.AzureStack.Management
                                     JToken propertiesValue = valueValue["properties"];
                                     if (propertiesValue != null && propertiesValue.Type != JTokenType.Null)
                                     {
-                                        AdminPlanDefinition propertiesInstance = new AdminPlanDefinition();
+                                        AdminPlanPropertiesDefinition propertiesInstance = new AdminPlanPropertiesDefinition();
                                         adminPlanModelInstance.Properties = propertiesInstance;
                                         
                                         JToken nameValue = propertiesValue["name"];
@@ -2322,20 +2045,6 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.ExternalReferenceId = externalReferenceIdInstance;
                                         }
                                         
-                                        JToken stateValue = propertiesValue["state"];
-                                        if (stateValue != null && stateValue.Type != JTokenType.Null)
-                                        {
-                                            AccessibilityState stateInstance = ((AccessibilityState)Enum.Parse(typeof(AccessibilityState), ((string)stateValue), true));
-                                            propertiesInstance.State = stateInstance;
-                                        }
-                                        
-                                        JToken quotaSyncStateValue = propertiesValue["quotaSyncState"];
-                                        if (quotaSyncStateValue != null && quotaSyncStateValue.Type != JTokenType.Null)
-                                        {
-                                            QuotaSyncState quotaSyncStateInstance = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue), true));
-                                            propertiesInstance.QuotaSyncState = quotaSyncStateInstance;
-                                        }
-                                        
                                         JToken subscriptionCountValue = propertiesValue["subscriptionCount"];
                                         if (subscriptionCountValue != null && subscriptionCountValue.Type != JTokenType.Null)
                                         {
@@ -2343,63 +2052,18 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                         }
                                         
-                                        JToken maxOccurrencesPerOfferValue = propertiesValue["maxOccurrencesPerOffer"];
-                                        if (maxOccurrencesPerOfferValue != null && maxOccurrencesPerOfferValue.Type != JTokenType.Null)
+                                        JToken quotaIdsValue = propertiesValue["quotaIds"];
+                                        if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
                                         {
-                                            int maxOccurrencesPerOfferInstance = ((int)maxOccurrencesPerOfferValue);
-                                            propertiesInstance.MaxOccurrencesPerOffer = maxOccurrencesPerOfferInstance;
+                                            String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
+                                            propertiesInstance.QuotaIds = quotaIdsInstance;
                                         }
                                         
-                                        JToken serviceQuotasArray = propertiesValue["serviceQuotas"];
-                                        if (serviceQuotasArray != null && serviceQuotasArray.Type != JTokenType.Null)
+                                        JToken skuIdsValue = propertiesValue["skuIds"];
+                                        if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
                                         {
-                                            foreach (JToken serviceQuotasValue in ((JArray)serviceQuotasArray))
-                                            {
-                                                ServiceQuotaDefinition serviceQuotaDefinitionInstance = new ServiceQuotaDefinition();
-                                                propertiesInstance.ServiceQuotas.Add(serviceQuotaDefinitionInstance);
-                                                
-                                                JToken resourceProviderIdValue = serviceQuotasValue["resourceProviderId"];
-                                                if (resourceProviderIdValue != null && resourceProviderIdValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderIdInstance = ((string)resourceProviderIdValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderId = resourceProviderIdInstance;
-                                                }
-                                                
-                                                JToken resourceProviderNamespaceValue = serviceQuotasValue["resourceProviderNamespace"];
-                                                if (resourceProviderNamespaceValue != null && resourceProviderNamespaceValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderNamespaceInstance = ((string)resourceProviderNamespaceValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderNamespace = resourceProviderNamespaceInstance;
-                                                }
-                                                
-                                                JToken resourceProviderDisplayNameValue = serviceQuotasValue["resourceProviderDisplayName"];
-                                                if (resourceProviderDisplayNameValue != null && resourceProviderDisplayNameValue.Type != JTokenType.Null)
-                                                {
-                                                    string resourceProviderDisplayNameInstance = ((string)resourceProviderDisplayNameValue);
-                                                    serviceQuotaDefinitionInstance.ResourceProviderDisplayName = resourceProviderDisplayNameInstance;
-                                                }
-                                                
-                                                JToken locationValue = serviceQuotasValue["location"];
-                                                if (locationValue != null && locationValue.Type != JTokenType.Null)
-                                                {
-                                                    string locationInstance = ((string)locationValue);
-                                                    serviceQuotaDefinitionInstance.Location = locationInstance;
-                                                }
-                                                
-                                                JToken quotaSyncStateValue2 = serviceQuotasValue["quotaSyncState"];
-                                                if (quotaSyncStateValue2 != null && quotaSyncStateValue2.Type != JTokenType.Null)
-                                                {
-                                                    QuotaSyncState quotaSyncStateInstance2 = ((QuotaSyncState)Enum.Parse(typeof(QuotaSyncState), ((string)quotaSyncStateValue2), true));
-                                                    serviceQuotaDefinitionInstance.QuotaSyncState = quotaSyncStateInstance2;
-                                                }
-                                                
-                                                JToken quotaSettingsValue = serviceQuotasValue["quotaSettings"];
-                                                if (quotaSettingsValue != null && quotaSettingsValue.Type != JTokenType.Null)
-                                                {
-                                                    string quotaSettingsInstance = quotaSettingsValue.ToString(Newtonsoft.Json.Formatting.Indented);
-                                                    serviceQuotaDefinitionInstance.QuotaSettings = quotaSettingsInstance;
-                                                }
-                                            }
+                                            String[]<string> skuIdsInstance = ((string)skuIdsValue);
+                                            propertiesInstance.SkuIds = skuIdsInstance;
                                         }
                                     }
                                     
@@ -2424,11 +2088,11 @@ namespace Microsoft.AzureStack.Management
                                         adminPlanModelInstance.Type = typeInstance;
                                     }
                                     
-                                    JToken locationValue2 = valueValue["location"];
-                                    if (locationValue2 != null && locationValue2.Type != JTokenType.Null)
+                                    JToken locationValue = valueValue["location"];
+                                    if (locationValue != null && locationValue.Type != JTokenType.Null)
                                     {
-                                        string locationInstance2 = ((string)locationValue2);
-                                        adminPlanModelInstance.Location = locationInstance2;
+                                        string locationInstance = ((string)locationValue);
+                                        adminPlanModelInstance.Location = locationInstance;
                                     }
                                     
                                     JToken tagsSequenceElement = ((JToken)valueValue["tags"]);

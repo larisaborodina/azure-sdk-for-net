@@ -20,19 +20,22 @@
 // code is regenerated.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Hyak.Common;
 
 namespace Microsoft.AzureStack.Management.Models
 {
     /// <summary>
-    /// Your documentation here.
+    /// A plan represents a package of quotas and capabilities that are offered
+    /// tenants
     /// </summary>
-    public partial class OfferDefinition
+    public partial class AdminPlanPropertiesDefinition
     {
         private string _description;
         
         /// <summary>
-        /// Optional. Gets or sets the description.
+        /// Optional. Description of the plan
         /// </summary>
         public string Description
         {
@@ -43,7 +46,7 @@ namespace Microsoft.AzureStack.Management.Models
         private string _displayName;
         
         /// <summary>
-        /// Optional. Gets or sets the display name.
+        /// Optional. Display name of the plan
         /// </summary>
         public string DisplayName
         {
@@ -51,21 +54,21 @@ namespace Microsoft.AzureStack.Management.Models
             set { this._displayName = value; }
         }
         
-        private string _id;
+        private string _externalReferenceId;
         
         /// <summary>
-        /// Optional. Full Id for the offer
+        /// Optional. The external reference identifier
         /// </summary>
-        public string Id
+        public string ExternalReferenceId
         {
-            get { return this._id; }
-            set { this._id = value; }
+            get { return this._externalReferenceId; }
+            set { this._externalReferenceId = value; }
         }
         
         private string _name;
         
         /// <summary>
-        /// Optional. Gets or sets the name of the offer.
+        /// Optional. Name of the plan
         /// </summary>
         public string Name
         {
@@ -73,11 +76,47 @@ namespace Microsoft.AzureStack.Management.Models
             set { this._name = value; }
         }
         
+        private IList<string> _quotaIds;
+        
         /// <summary>
-        /// Initializes a new instance of the OfferDefinition class.
+        /// Optional. Quota Ids associated with the plan
         /// </summary>
-        public OfferDefinition()
+        public IList<string> QuotaIds
         {
+            get { return this._quotaIds; }
+            set { this._quotaIds = value; }
+        }
+        
+        private IList<string> _skuIds;
+        
+        /// <summary>
+        /// Optional. SKU Ids associated with the plan
+        /// </summary>
+        public IList<string> SkuIds
+        {
+            get { return this._skuIds; }
+            set { this._skuIds = value; }
+        }
+        
+        private int? _subscriptionCount;
+        
+        /// <summary>
+        /// Optional. The number of subscriptions associated with the plan
+        /// </summary>
+        public int? SubscriptionCount
+        {
+            get { return this._subscriptionCount; }
+            set { this._subscriptionCount = value; }
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the AdminPlanPropertiesDefinition
+        /// class.
+        /// </summary>
+        public AdminPlanPropertiesDefinition()
+        {
+            this.QuotaIds = new LazyList<string>();
+            this.SkuIds = new LazyList<string>();
         }
     }
 }
