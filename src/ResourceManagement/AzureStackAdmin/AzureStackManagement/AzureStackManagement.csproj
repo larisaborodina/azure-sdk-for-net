@@ -70,10 +70,11 @@
     <Compile Include="Generated\ManagedSubscriptionOperations.cs" />
     <Compile Include="Generated\ManagedSubscriptionOperationsExtensions.cs" />
     <Compile Include="Generated\Models\AccessibilityState.cs" />
-    <Compile Include="Generated\Models\AdminOfferDefinition.cs" />
+    <Compile Include="Generated\Models\AddonPlanDefinition.cs" />
     <Compile Include="Generated\Models\AdminOfferModel.cs" />
-    <Compile Include="Generated\Models\AdminPlanDefinition.cs" />
+    <Compile Include="Generated\Models\AdminOfferPropertiesDefinition.cs" />
     <Compile Include="Generated\Models\AdminPlanModel.cs" />
+    <Compile Include="Generated\Models\AdminPlanPropertiesDefinition.cs" />
     <Compile Include="Generated\Models\CloudCreateOrUpdateParameters.cs" />
     <Compile Include="Generated\Models\CloudCreateOrUpdateResult.cs" />
     <Compile Include="Generated\Models\CloudDefinition.cs" />
@@ -166,7 +167,6 @@
     <Compile Include="Generated\Models\ProviderResourceType.cs" />
     <Compile Include="Generated\Models\ProvisioningState.cs" />
     <Compile Include="Generated\Models\PublicGalleryItemListResult.cs" />
-    <Compile Include="Generated\Models\QuotaSyncState.cs" />
     <Compile Include="Generated\Models\ResourceActionParameters.cs" />
     <Compile Include="Generated\Models\ResourceActionResult.cs" />
     <Compile Include="Generated\Models\ResourceBase.cs" />
@@ -191,7 +191,6 @@
     <Compile Include="Generated\Models\ResourceProviderListResult.cs" />
     <Compile Include="Generated\Models\ResourceProviderManifest.cs" />
     <Compile Include="Generated\Models\ResourceType.cs" />
-    <Compile Include="Generated\Models\ServiceQuotaDefinition.cs" />
     <Compile Include="Generated\Models\ShallowResourceListResult.cs" />
     <Compile Include="Generated\Models\SubscriptionCreateOrUpdateParameters.cs" />
     <Compile Include="Generated\Models\SubscriptionCreateOrUpdateResult.cs" />

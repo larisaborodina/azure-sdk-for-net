@@ -30,6 +30,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Hyak.Common;
+using Hyak.Common.Internals;
 using Microsoft.Azure;
 using Microsoft.AzureStack.Management;
 using Microsoft.AzureStack.Management.Models;
@@ -205,12 +206,28 @@ namespace Microsoft.AzureStack.Management
                     
                     if (parameters.Plan.Properties.QuotaIds != null)
                     {
-                        propertiesValue["quotaIds"] = parameters.Plan.Properties.QuotaIds;
+                        if (parameters.Plan.Properties.QuotaIds is ILazyCollection == false || ((ILazyCollection)parameters.Plan.Properties.QuotaIds).IsInitialized)
+                        {
+                            JArray quotaIdsArray = new JArray();
+                            foreach (string quotaIdsItem in parameters.Plan.Properties.QuotaIds)
+                            {
+                                quotaIdsArray.Add(quotaIdsItem);
+                            }
+                            propertiesValue["quotaIds"] = quotaIdsArray;
+                        }
                     }
                     
                     if (parameters.Plan.Properties.SkuIds != null)
                     {
-                        propertiesValue["skuIds"] = parameters.Plan.Properties.SkuIds;
+                        if (parameters.Plan.Properties.SkuIds is ILazyCollection == false || ((ILazyCollection)parameters.Plan.Properties.SkuIds).IsInitialized)
+                        {
+                            JArray skuIdsArray = new JArray();
+                            foreach (string skuIdsItem in parameters.Plan.Properties.SkuIds)
+                            {
+                                skuIdsArray.Add(skuIdsItem);
+                            }
+                            propertiesValue["skuIds"] = skuIdsArray;
+                        }
                     }
                 }
                 
@@ -336,18 +353,22 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                 }
                                 
-                                JToken quotaIdsValue = propertiesValue2["quotaIds"];
-                                if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
+                                JToken quotaIdsArray2 = propertiesValue2["quotaIds"];
+                                if (quotaIdsArray2 != null && quotaIdsArray2.Type != JTokenType.Null)
                                 {
-                                    String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
-                                    propertiesInstance.QuotaIds = quotaIdsInstance;
+                                    foreach (JToken quotaIdsValue in ((JArray)quotaIdsArray2))
+                                    {
+                                        propertiesInstance.QuotaIds.Add(((string)quotaIdsValue));
+                                    }
                                 }
                                 
-                                JToken skuIdsValue = propertiesValue2["skuIds"];
-                                if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
+                                JToken skuIdsArray2 = propertiesValue2["skuIds"];
+                                if (skuIdsArray2 != null && skuIdsArray2.Type != JTokenType.Null)
                                 {
-                                    String[]<string> skuIdsInstance = ((string)skuIdsValue);
-                                    propertiesInstance.SkuIds = skuIdsInstance;
+                                    foreach (JToken skuIdsValue in ((JArray)skuIdsArray2))
+                                    {
+                                        propertiesInstance.SkuIds.Add(((string)skuIdsValue));
+                                    }
                                 }
                             }
                             
@@ -745,18 +766,22 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                 }
                                 
-                                JToken quotaIdsValue = propertiesValue["quotaIds"];
-                                if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
+                                JToken quotaIdsArray = propertiesValue["quotaIds"];
+                                if (quotaIdsArray != null && quotaIdsArray.Type != JTokenType.Null)
                                 {
-                                    String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
-                                    propertiesInstance.QuotaIds = quotaIdsInstance;
+                                    foreach (JToken quotaIdsValue in ((JArray)quotaIdsArray))
+                                    {
+                                        propertiesInstance.QuotaIds.Add(((string)quotaIdsValue));
+                                    }
                                 }
                                 
-                                JToken skuIdsValue = propertiesValue["skuIds"];
-                                if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
+                                JToken skuIdsArray = propertiesValue["skuIds"];
+                                if (skuIdsArray != null && skuIdsArray.Type != JTokenType.Null)
                                 {
-                                    String[]<string> skuIdsInstance = ((string)skuIdsValue);
-                                    propertiesInstance.SkuIds = skuIdsInstance;
+                                    foreach (JToken skuIdsValue in ((JArray)skuIdsArray))
+                                    {
+                                        propertiesInstance.SkuIds.Add(((string)skuIdsValue));
+                                    }
                                 }
                             }
                             
@@ -1565,18 +1590,22 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                         }
                                         
-                                        JToken quotaIdsValue = propertiesValue["quotaIds"];
-                                        if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
+                                        JToken quotaIdsArray = propertiesValue["quotaIds"];
+                                        if (quotaIdsArray != null && quotaIdsArray.Type != JTokenType.Null)
                                         {
-                                            String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
-                                            propertiesInstance.QuotaIds = quotaIdsInstance;
+                                            foreach (JToken quotaIdsValue in ((JArray)quotaIdsArray))
+                                            {
+                                                propertiesInstance.QuotaIds.Add(((string)quotaIdsValue));
+                                            }
                                         }
                                         
-                                        JToken skuIdsValue = propertiesValue["skuIds"];
-                                        if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
+                                        JToken skuIdsArray = propertiesValue["skuIds"];
+                                        if (skuIdsArray != null && skuIdsArray.Type != JTokenType.Null)
                                         {
-                                            String[]<string> skuIdsInstance = ((string)skuIdsValue);
-                                            propertiesInstance.SkuIds = skuIdsInstance;
+                                            foreach (JToken skuIdsValue in ((JArray)skuIdsArray))
+                                            {
+                                                propertiesInstance.SkuIds.Add(((string)skuIdsValue));
+                                            }
                                         }
                                     }
                                     
@@ -1800,18 +1829,22 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                         }
                                         
-                                        JToken quotaIdsValue = propertiesValue["quotaIds"];
-                                        if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
+                                        JToken quotaIdsArray = propertiesValue["quotaIds"];
+                                        if (quotaIdsArray != null && quotaIdsArray.Type != JTokenType.Null)
                                         {
-                                            String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
-                                            propertiesInstance.QuotaIds = quotaIdsInstance;
+                                            foreach (JToken quotaIdsValue in ((JArray)quotaIdsArray))
+                                            {
+                                                propertiesInstance.QuotaIds.Add(((string)quotaIdsValue));
+                                            }
                                         }
                                         
-                                        JToken skuIdsValue = propertiesValue["skuIds"];
-                                        if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
+                                        JToken skuIdsArray = propertiesValue["skuIds"];
+                                        if (skuIdsArray != null && skuIdsArray.Type != JTokenType.Null)
                                         {
-                                            String[]<string> skuIdsInstance = ((string)skuIdsValue);
-                                            propertiesInstance.SkuIds = skuIdsInstance;
+                                            foreach (JToken skuIdsValue in ((JArray)skuIdsArray))
+                                            {
+                                                propertiesInstance.SkuIds.Add(((string)skuIdsValue));
+                                            }
                                         }
                                     }
                                     
@@ -2052,18 +2085,22 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.SubscriptionCount = subscriptionCountInstance;
                                         }
                                         
-                                        JToken quotaIdsValue = propertiesValue["quotaIds"];
-                                        if (quotaIdsValue != null && quotaIdsValue.Type != JTokenType.Null)
+                                        JToken quotaIdsArray = propertiesValue["quotaIds"];
+                                        if (quotaIdsArray != null && quotaIdsArray.Type != JTokenType.Null)
                                         {
-                                            String[]<string> quotaIdsInstance = ((string)quotaIdsValue);
-                                            propertiesInstance.QuotaIds = quotaIdsInstance;
+                                            foreach (JToken quotaIdsValue in ((JArray)quotaIdsArray))
+                                            {
+                                                propertiesInstance.QuotaIds.Add(((string)quotaIdsValue));
+                                            }
                                         }
                                         
-                                        JToken skuIdsValue = propertiesValue["skuIds"];
-                                        if (skuIdsValue != null && skuIdsValue.Type != JTokenType.Null)
+                                        JToken skuIdsArray = propertiesValue["skuIds"];
+                                        if (skuIdsArray != null && skuIdsArray.Type != JTokenType.Null)
                                         {
-                                            String[]<string> skuIdsInstance = ((string)skuIdsValue);
-                                            propertiesInstance.SkuIds = skuIdsInstance;
+                                            foreach (JToken skuIdsValue in ((JArray)skuIdsArray))
+                                            {
+                                                propertiesInstance.SkuIds.Add(((string)skuIdsValue));
+                                            }
                                         }
                                     }
                                     
