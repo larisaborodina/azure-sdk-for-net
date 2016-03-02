@@ -21,31 +21,47 @@
 
 using System;
 using System.Linq;
-using Microsoft.AzureStack.Management.Models;
 
 namespace Microsoft.AzureStack.Management.Models
 {
     /// <summary>
-    /// Your documentation here.
+    /// The resource routing type.
     /// </summary>
-    public partial class ProviderRegistrationModel : ResourceBase
+    public enum RoutingType
     {
-        private ProviderRegistrationPropertiesDefinition _properties;
+        /// <summary>
+        /// The resource routing type is default.
+        /// </summary>
+        Default = 0,
         
         /// <summary>
-        /// Optional. Your documentation here.
+        /// The resource routing type is proxy only.
         /// </summary>
-        public ProviderRegistrationPropertiesDefinition Properties
-        {
-            get { return this._properties; }
-            set { this._properties = value; }
-        }
+        ProxyOnly = 1,
         
         /// <summary>
-        /// Initializes a new instance of the ProviderRegistrationModel class.
+        /// The resource routing type is host based.
         /// </summary>
-        public ProviderRegistrationModel()
-        {
-        }
+        HostBased = 2,
+        
+        /// <summary>
+        /// The resource routing type is extension.
+        /// </summary>
+        Extension = 4,
+        
+        /// <summary>
+        /// The resource routing type is tenant.
+        /// </summary>
+        Tenant = 8,
+        
+        /// <summary>
+        /// The resource routing type is fan out.
+        /// </summary>
+        Fanout = 16,
+        
+        /// <summary>
+        /// The resource routing type is Location based.
+        /// </summary>
+        LocationBased = 32,
     }
 }
