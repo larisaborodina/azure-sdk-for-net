@@ -131,7 +131,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Subscriptions/providerregistrations/";
+            url = url + "/providers/Microsoft.Subscriptions.Providers/manifests/";
             if (parameters.ProviderRegistration.Name != null)
             {
                 url = url + Uri.EscapeDataString(parameters.ProviderRegistration.Name);
@@ -206,6 +206,19 @@ namespace Microsoft.AzureStack.Management
                         JObject manifestEndpointValue = new JObject();
                         propertiesValue["manifestEndpoint"] = manifestEndpointValue;
                         
+                        if (parameters.ProviderRegistration.Properties.ManifestEndpoint.ApiVersions != null)
+                        {
+                            if (parameters.ProviderRegistration.Properties.ManifestEndpoint.ApiVersions is ILazyCollection == false || ((ILazyCollection)parameters.ProviderRegistration.Properties.ManifestEndpoint.ApiVersions).IsInitialized)
+                            {
+                                JArray apiVersionsArray = new JArray();
+                                foreach (string apiVersionsItem in parameters.ProviderRegistration.Properties.ManifestEndpoint.ApiVersions)
+                                {
+                                    apiVersionsArray.Add(apiVersionsItem);
+                                }
+                                manifestEndpointValue["apiVersions"] = apiVersionsArray;
+                            }
+                        }
+                        
                         if (parameters.ProviderRegistration.Properties.ManifestEndpoint.ApiVersion != null)
                         {
                             manifestEndpointValue["apiVersion"] = parameters.ProviderRegistration.Properties.ManifestEndpoint.ApiVersion;
@@ -257,7 +270,7 @@ namespace Microsoft.AzureStack.Management
                     
                     if (parameters.ProviderRegistration.Properties.ExtensionUri != null)
                     {
-                        propertiesValue["extensionEndpoint"] = parameters.ProviderRegistration.Properties.ExtensionUri;
+                        propertiesValue["extensionUri"] = parameters.ProviderRegistration.Properties.ExtensionUri;
                     }
                     
                     if (parameters.ProviderRegistration.Properties.ResourceTypes != null)
@@ -316,6 +329,19 @@ namespace Microsoft.AzureStack.Management
                                         {
                                             JObject resourceProviderEndpointValue = new JObject();
                                             endpointsArray.Add(resourceProviderEndpointValue);
+                                            
+                                            if (endpointsItem.ApiVersions != null)
+                                            {
+                                                if (endpointsItem.ApiVersions is ILazyCollection == false || ((ILazyCollection)endpointsItem.ApiVersions).IsInitialized)
+                                                {
+                                                    JArray apiVersionsArray2 = new JArray();
+                                                    foreach (string apiVersionsItem2 in endpointsItem.ApiVersions)
+                                                    {
+                                                        apiVersionsArray2.Add(apiVersionsItem2);
+                                                    }
+                                                    resourceProviderEndpointValue["apiVersions"] = apiVersionsArray2;
+                                                }
+                                            }
                                             
                                             if (endpointsItem.ApiVersion != null)
                                             {
@@ -479,6 +505,15 @@ namespace Microsoft.AzureStack.Management
                                     ResourceProviderEndpoint manifestEndpointInstance = new ResourceProviderEndpoint();
                                     propertiesInstance.ManifestEndpoint = manifestEndpointInstance;
                                     
+                                    JToken apiVersionsArray3 = manifestEndpointValue2["apiVersions"];
+                                    if (apiVersionsArray3 != null && apiVersionsArray3.Type != JTokenType.Null)
+                                    {
+                                        foreach (JToken apiVersionsValue in ((JArray)apiVersionsArray3))
+                                        {
+                                            manifestEndpointInstance.ApiVersions.Add(((string)apiVersionsValue));
+                                        }
+                                    }
+                                    
                                     JToken apiVersionValue = manifestEndpointValue2["apiVersion"];
                                     if (apiVersionValue != null && apiVersionValue.Type != JTokenType.Null)
                                     {
@@ -550,11 +585,11 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.ExtensionName = extensionNameInstance;
                                 }
                                 
-                                JToken extensionEndpointValue = propertiesValue2["extensionEndpoint"];
-                                if (extensionEndpointValue != null && extensionEndpointValue.Type != JTokenType.Null)
+                                JToken extensionUriValue = propertiesValue2["extensionUri"];
+                                if (extensionUriValue != null && extensionUriValue.Type != JTokenType.Null)
                                 {
-                                    string extensionEndpointInstance = ((string)extensionEndpointValue);
-                                    propertiesInstance.ExtensionUri = extensionEndpointInstance;
+                                    string extensionUriInstance = ((string)extensionUriValue);
+                                    propertiesInstance.ExtensionUri = extensionUriInstance;
                                 }
                                 
                                 JToken resourceTypesArray2 = propertiesValue2["resourceTypes"];
@@ -618,6 +653,15 @@ namespace Microsoft.AzureStack.Management
                                             {
                                                 ResourceProviderEndpoint resourceProviderEndpointInstance = new ResourceProviderEndpoint();
                                                 resourceTypeInstance.Endpoints.Add(resourceProviderEndpointInstance);
+                                                
+                                                JToken apiVersionsArray4 = endpointsValue["apiVersions"];
+                                                if (apiVersionsArray4 != null && apiVersionsArray4.Type != JTokenType.Null)
+                                                {
+                                                    foreach (JToken apiVersionsValue2 in ((JArray)apiVersionsArray4))
+                                                    {
+                                                        resourceProviderEndpointInstance.ApiVersions.Add(((string)apiVersionsValue2));
+                                                    }
+                                                }
                                                 
                                                 JToken apiVersionValue2 = endpointsValue["apiVersion"];
                                                 if (apiVersionValue2 != null && apiVersionValue2.Type != JTokenType.Null)
@@ -798,7 +842,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Subscriptions/providerregistrations/";
+            url = url + "/providers/Microsoft.Subscriptions.Providers/manifests/";
             url = url + Uri.EscapeDataString(providerregistrationId);
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
@@ -946,7 +990,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Subscriptions/providerregistrations/";
+            url = url + "/providers/Microsoft.Subscriptions.Providers/manifests/";
             url = url + Uri.EscapeDataString(providerregistrationId);
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
@@ -1066,6 +1110,15 @@ namespace Microsoft.AzureStack.Management
                                     ResourceProviderEndpoint manifestEndpointInstance = new ResourceProviderEndpoint();
                                     propertiesInstance.ManifestEndpoint = manifestEndpointInstance;
                                     
+                                    JToken apiVersionsArray = manifestEndpointValue["apiVersions"];
+                                    if (apiVersionsArray != null && apiVersionsArray.Type != JTokenType.Null)
+                                    {
+                                        foreach (JToken apiVersionsValue in ((JArray)apiVersionsArray))
+                                        {
+                                            manifestEndpointInstance.ApiVersions.Add(((string)apiVersionsValue));
+                                        }
+                                    }
+                                    
                                     JToken apiVersionValue = manifestEndpointValue["apiVersion"];
                                     if (apiVersionValue != null && apiVersionValue.Type != JTokenType.Null)
                                     {
@@ -1137,11 +1190,11 @@ namespace Microsoft.AzureStack.Management
                                     propertiesInstance.ExtensionName = extensionNameInstance;
                                 }
                                 
-                                JToken extensionEndpointValue = propertiesValue["extensionEndpoint"];
-                                if (extensionEndpointValue != null && extensionEndpointValue.Type != JTokenType.Null)
+                                JToken extensionUriValue = propertiesValue["extensionUri"];
+                                if (extensionUriValue != null && extensionUriValue.Type != JTokenType.Null)
                                 {
-                                    string extensionEndpointInstance = ((string)extensionEndpointValue);
-                                    propertiesInstance.ExtensionUri = extensionEndpointInstance;
+                                    string extensionUriInstance = ((string)extensionUriValue);
+                                    propertiesInstance.ExtensionUri = extensionUriInstance;
                                 }
                                 
                                 JToken resourceTypesArray = propertiesValue["resourceTypes"];
@@ -1205,6 +1258,15 @@ namespace Microsoft.AzureStack.Management
                                             {
                                                 ResourceProviderEndpoint resourceProviderEndpointInstance = new ResourceProviderEndpoint();
                                                 resourceTypeInstance.Endpoints.Add(resourceProviderEndpointInstance);
+                                                
+                                                JToken apiVersionsArray2 = endpointsValue["apiVersions"];
+                                                if (apiVersionsArray2 != null && apiVersionsArray2.Type != JTokenType.Null)
+                                                {
+                                                    foreach (JToken apiVersionsValue2 in ((JArray)apiVersionsArray2))
+                                                    {
+                                                        resourceProviderEndpointInstance.ApiVersions.Add(((string)apiVersionsValue2));
+                                                    }
+                                                }
                                                 
                                                 JToken apiVersionValue2 = endpointsValue["apiVersion"];
                                                 if (apiVersionValue2 != null && apiVersionValue2.Type != JTokenType.Null)
@@ -1376,7 +1438,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Subscriptions/providerregistrations";
+            url = url + "/providers/Microsoft.Subscriptions.Providers/manifests";
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
             if (queryParameters.Count > 0)
@@ -1500,6 +1562,15 @@ namespace Microsoft.AzureStack.Management
                                             ResourceProviderEndpoint manifestEndpointInstance = new ResourceProviderEndpoint();
                                             propertiesInstance.ManifestEndpoint = manifestEndpointInstance;
                                             
+                                            JToken apiVersionsArray = manifestEndpointValue["apiVersions"];
+                                            if (apiVersionsArray != null && apiVersionsArray.Type != JTokenType.Null)
+                                            {
+                                                foreach (JToken apiVersionsValue in ((JArray)apiVersionsArray))
+                                                {
+                                                    manifestEndpointInstance.ApiVersions.Add(((string)apiVersionsValue));
+                                                }
+                                            }
+                                            
                                             JToken apiVersionValue = manifestEndpointValue["apiVersion"];
                                             if (apiVersionValue != null && apiVersionValue.Type != JTokenType.Null)
                                             {
@@ -1571,11 +1642,11 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.ExtensionName = extensionNameInstance;
                                         }
                                         
-                                        JToken extensionEndpointValue = propertiesValue["extensionEndpoint"];
-                                        if (extensionEndpointValue != null && extensionEndpointValue.Type != JTokenType.Null)
+                                        JToken extensionUriValue = propertiesValue["extensionUri"];
+                                        if (extensionUriValue != null && extensionUriValue.Type != JTokenType.Null)
                                         {
-                                            string extensionEndpointInstance = ((string)extensionEndpointValue);
-                                            propertiesInstance.ExtensionUri = extensionEndpointInstance;
+                                            string extensionUriInstance = ((string)extensionUriValue);
+                                            propertiesInstance.ExtensionUri = extensionUriInstance;
                                         }
                                         
                                         JToken resourceTypesArray = propertiesValue["resourceTypes"];
@@ -1639,6 +1710,15 @@ namespace Microsoft.AzureStack.Management
                                                     {
                                                         ResourceProviderEndpoint resourceProviderEndpointInstance = new ResourceProviderEndpoint();
                                                         resourceTypeInstance.Endpoints.Add(resourceProviderEndpointInstance);
+                                                        
+                                                        JToken apiVersionsArray2 = endpointsValue["apiVersions"];
+                                                        if (apiVersionsArray2 != null && apiVersionsArray2.Type != JTokenType.Null)
+                                                        {
+                                                            foreach (JToken apiVersionsValue2 in ((JArray)apiVersionsArray2))
+                                                            {
+                                                                resourceProviderEndpointInstance.ApiVersions.Add(((string)apiVersionsValue2));
+                                                            }
+                                                        }
                                                         
                                                         JToken apiVersionValue2 = endpointsValue["apiVersion"];
                                                         if (apiVersionValue2 != null && apiVersionValue2.Type != JTokenType.Null)
@@ -1913,6 +1993,15 @@ namespace Microsoft.AzureStack.Management
                                             ResourceProviderEndpoint manifestEndpointInstance = new ResourceProviderEndpoint();
                                             propertiesInstance.ManifestEndpoint = manifestEndpointInstance;
                                             
+                                            JToken apiVersionsArray = manifestEndpointValue["apiVersions"];
+                                            if (apiVersionsArray != null && apiVersionsArray.Type != JTokenType.Null)
+                                            {
+                                                foreach (JToken apiVersionsValue in ((JArray)apiVersionsArray))
+                                                {
+                                                    manifestEndpointInstance.ApiVersions.Add(((string)apiVersionsValue));
+                                                }
+                                            }
+                                            
                                             JToken apiVersionValue = manifestEndpointValue["apiVersion"];
                                             if (apiVersionValue != null && apiVersionValue.Type != JTokenType.Null)
                                             {
@@ -1984,11 +2073,11 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.ExtensionName = extensionNameInstance;
                                         }
                                         
-                                        JToken extensionEndpointValue = propertiesValue["extensionEndpoint"];
-                                        if (extensionEndpointValue != null && extensionEndpointValue.Type != JTokenType.Null)
+                                        JToken extensionUriValue = propertiesValue["extensionUri"];
+                                        if (extensionUriValue != null && extensionUriValue.Type != JTokenType.Null)
                                         {
-                                            string extensionEndpointInstance = ((string)extensionEndpointValue);
-                                            propertiesInstance.ExtensionUri = extensionEndpointInstance;
+                                            string extensionUriInstance = ((string)extensionUriValue);
+                                            propertiesInstance.ExtensionUri = extensionUriInstance;
                                         }
                                         
                                         JToken resourceTypesArray = propertiesValue["resourceTypes"];
@@ -2052,6 +2141,15 @@ namespace Microsoft.AzureStack.Management
                                                     {
                                                         ResourceProviderEndpoint resourceProviderEndpointInstance = new ResourceProviderEndpoint();
                                                         resourceTypeInstance.Endpoints.Add(resourceProviderEndpointInstance);
+                                                        
+                                                        JToken apiVersionsArray2 = endpointsValue["apiVersions"];
+                                                        if (apiVersionsArray2 != null && apiVersionsArray2.Type != JTokenType.Null)
+                                                        {
+                                                            foreach (JToken apiVersionsValue2 in ((JArray)apiVersionsArray2))
+                                                            {
+                                                                resourceProviderEndpointInstance.ApiVersions.Add(((string)apiVersionsValue2));
+                                                            }
+                                                        }
                                                         
                                                         JToken apiVersionValue2 = endpointsValue["apiVersion"];
                                                         if (apiVersionValue2 != null && apiVersionValue2.Type != JTokenType.Null)
@@ -2214,7 +2312,7 @@ namespace Microsoft.AzureStack.Management
             {
                 url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
             }
-            url = url + "/providers/Microsoft.Subscriptions/providerregistrations";
+            url = url + "/providers/Microsoft.Subscriptions.Providers/manifests";
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
             if (queryParameters.Count > 0)
@@ -2338,6 +2436,15 @@ namespace Microsoft.AzureStack.Management
                                             ResourceProviderEndpoint manifestEndpointInstance = new ResourceProviderEndpoint();
                                             propertiesInstance.ManifestEndpoint = manifestEndpointInstance;
                                             
+                                            JToken apiVersionsArray = manifestEndpointValue["apiVersions"];
+                                            if (apiVersionsArray != null && apiVersionsArray.Type != JTokenType.Null)
+                                            {
+                                                foreach (JToken apiVersionsValue in ((JArray)apiVersionsArray))
+                                                {
+                                                    manifestEndpointInstance.ApiVersions.Add(((string)apiVersionsValue));
+                                                }
+                                            }
+                                            
                                             JToken apiVersionValue = manifestEndpointValue["apiVersion"];
                                             if (apiVersionValue != null && apiVersionValue.Type != JTokenType.Null)
                                             {
@@ -2409,11 +2516,11 @@ namespace Microsoft.AzureStack.Management
                                             propertiesInstance.ExtensionName = extensionNameInstance;
                                         }
                                         
-                                        JToken extensionEndpointValue = propertiesValue["extensionEndpoint"];
-                                        if (extensionEndpointValue != null && extensionEndpointValue.Type != JTokenType.Null)
+                                        JToken extensionUriValue = propertiesValue["extensionUri"];
+                                        if (extensionUriValue != null && extensionUriValue.Type != JTokenType.Null)
                                         {
-                                            string extensionEndpointInstance = ((string)extensionEndpointValue);
-                                            propertiesInstance.ExtensionUri = extensionEndpointInstance;
+                                            string extensionUriInstance = ((string)extensionUriValue);
+                                            propertiesInstance.ExtensionUri = extensionUriInstance;
                                         }
                                         
                                         JToken resourceTypesArray = propertiesValue["resourceTypes"];
@@ -2477,6 +2584,15 @@ namespace Microsoft.AzureStack.Management
                                                     {
                                                         ResourceProviderEndpoint resourceProviderEndpointInstance = new ResourceProviderEndpoint();
                                                         resourceTypeInstance.Endpoints.Add(resourceProviderEndpointInstance);
+                                                        
+                                                        JToken apiVersionsArray2 = endpointsValue["apiVersions"];
+                                                        if (apiVersionsArray2 != null && apiVersionsArray2.Type != JTokenType.Null)
+                                                        {
+                                                            foreach (JToken apiVersionsValue2 in ((JArray)apiVersionsArray2))
+                                                            {
+                                                                resourceProviderEndpointInstance.ApiVersions.Add(((string)apiVersionsValue2));
+                                                            }
+                                                        }
                                                         
                                                         JToken apiVersionValue2 = endpointsValue["apiVersion"];
                                                         if (apiVersionValue2 != null && apiVersionValue2.Type != JTokenType.Null)
@@ -2651,7 +2767,7 @@ namespace Microsoft.AzureStack.Management
             {
                 url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
             }
-            url = url + "/providers/Microsoft.Subscriptions/validateProviderRegistration";
+            url = url + "/providers/Microsoft.Subscriptions.Providers/validateManifest";
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
             if (queryParameters.Count > 0)
@@ -2711,6 +2827,19 @@ namespace Microsoft.AzureStack.Management
                 {
                     JObject manifestEndpointValue = new JObject();
                     providerRegistrationValidateParametersValue["manifestEndpoint"] = manifestEndpointValue;
+                    
+                    if (parameters.ProviderRegistration.ManifestEndpoint.ApiVersions != null)
+                    {
+                        if (parameters.ProviderRegistration.ManifestEndpoint.ApiVersions is ILazyCollection == false || ((ILazyCollection)parameters.ProviderRegistration.ManifestEndpoint.ApiVersions).IsInitialized)
+                        {
+                            JArray apiVersionsArray = new JArray();
+                            foreach (string apiVersionsItem in parameters.ProviderRegistration.ManifestEndpoint.ApiVersions)
+                            {
+                                apiVersionsArray.Add(apiVersionsItem);
+                            }
+                            manifestEndpointValue["apiVersions"] = apiVersionsArray;
+                        }
+                    }
                     
                     if (parameters.ProviderRegistration.ManifestEndpoint.ApiVersion != null)
                     {

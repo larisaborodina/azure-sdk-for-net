@@ -20,7 +20,9 @@
 // code is regenerated.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Hyak.Common;
 
 namespace Microsoft.AzureStack.Management.Models
 {
@@ -38,6 +40,17 @@ namespace Microsoft.AzureStack.Management.Models
         {
             get { return this._apiVersion; }
             set { this._apiVersion = value; }
+        }
+        
+        private IList<string> _apiVersions;
+        
+        /// <summary>
+        /// Optional. Your documentation here.
+        /// </summary>
+        public IList<string> ApiVersions
+        {
+            get { return this._apiVersions; }
+            set { this._apiVersions = value; }
         }
         
         private string _authenticationPassword;
@@ -102,6 +115,7 @@ namespace Microsoft.AzureStack.Management.Models
         /// </summary>
         public ResourceProviderEndpoint()
         {
+            this.ApiVersions = new LazyList<string>();
         }
     }
 }
