@@ -133,7 +133,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Gallery/mygalleryitems/";
+            url = url + "/providers/Microsoft.Gallery.Admin/galleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
@@ -169,7 +169,7 @@ namespace Microsoft.AzureStack.Management
                 await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Serialize Request
-                string requestContent = parameters.Manifest;
+                string requestContent = parameters.Manifest.ToString();
                 httpRequest.Content = new StringContent(requestContent, Encoding.UTF8);
                 httpRequest.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
                 
@@ -287,7 +287,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Gallery/mygalleryitems/";
+            url = url + "/providers/Microsoft.Gallery.Admin/galleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
@@ -435,7 +435,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Gallery/mygalleryitems/";
+            url = url + "/providers/Microsoft.Gallery.Admin/galleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
@@ -811,7 +811,7 @@ namespace Microsoft.AzureStack.Management
             }
             url = url + "/resourcegroups/";
             url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Gallery/mygalleryitems";
+            url = url + "/providers/Microsoft.Gallery.Admin/galleryitems";
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
             if (queryParameters.Count > 0)
@@ -1541,7 +1541,7 @@ namespace Microsoft.AzureStack.Management
             {
                 url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
             }
-            url = url + "/providers/Microsoft.Gallery/mygalleryitems";
+            url = url + "/providers/Microsoft.Gallery.Admin/galleryitems";
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
             if (queryParameters.Count > 0)

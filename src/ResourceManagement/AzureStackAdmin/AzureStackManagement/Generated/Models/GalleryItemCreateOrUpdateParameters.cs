@@ -29,15 +29,15 @@ namespace Microsoft.AzureStack.Management.Models
     /// </summary>
     public partial class GalleryItemCreateOrUpdateParameters
     {
-        private string _manifest;
+        private string _galleryItemUri;
         
         /// <summary>
         /// Optional. Your documentation here.
         /// </summary>
-        public string Manifest
+        public string GalleryItemUri
         {
-            get { return this._manifest; }
-            set { this._manifest = value; }
+            get { return this._galleryItemUri; }
+            set { this._galleryItemUri = value; }
         }
         
         /// <summary>
