@@ -169,7 +169,7 @@ namespace Microsoft.AzureStack.Management
                 await this.Client.Credentials.ProcessHttpRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
                 
                 // Serialize Request
-                string requestContent = parameters.Manifest.ToString();
+                string requestContent = parameters.GalleryItemUri;
                 httpRequest.Content = new StringContent(requestContent, Encoding.UTF8);
                 httpRequest.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
                 
