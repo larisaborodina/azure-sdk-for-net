@@ -44,7 +44,8 @@ namespace Microsoft.AzureStack.Management
         /// Required. Your documentation here.
         /// </param>
         /// <param name='galleryItemId'>
-        /// Required. Your documentation here.
+        /// Required. Gallery item identity should exactly match the manifest
+        /// identity pattern {name}.{publisher}.{version}
         /// </param>
         /// <param name='parameters'>
         /// Required. Your documentation here.
@@ -75,7 +76,8 @@ namespace Microsoft.AzureStack.Management
         /// Required. Your documentation here.
         /// </param>
         /// <param name='galleryItemId'>
-        /// Required. Your documentation here.
+        /// Required. Gallery item identity should exactly match the manifest
+        /// identity pattern {name}.{publisher}.{version}
         /// </param>
         /// <param name='parameters'>
         /// Required. Your documentation here.
