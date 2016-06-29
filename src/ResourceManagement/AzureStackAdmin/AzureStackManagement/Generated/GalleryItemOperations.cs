@@ -26,7 +26,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Hyak.Common;
@@ -71,12 +70,6 @@ namespace Microsoft.AzureStack.Management
         /// http://msdn.microsoft.com/en-us/library/windowsazure/XXXXX.aspx
         /// for more information)
         /// </summary>
-        /// <param name='resourceGroupName'>
-        /// Required. Your documentation here.
-        /// </param>
-        /// <param name='galleryItemId'>
-        /// Required. Your documentation here.
-        /// </param>
         /// <param name='parameters'>
         /// Required. Your documentation here.
         /// </param>
@@ -87,25 +80,9 @@ namespace Microsoft.AzureStack.Management
         /// A standard service response including an HTTP status code and
         /// request ID.
         /// </returns>
-        public async Task<AzureOperationResponse> CreateOrUpdateAsync(string resourceGroupName, string galleryItemId, GalleryItemCreateOrUpdateParameters parameters, CancellationToken cancellationToken)
+        public async Task<AzureOperationResponse> CreateOrUpdateAsync(GalleryItemCreateOrUpdateParameters parameters, CancellationToken cancellationToken)
         {
             // Validate
-            if (resourceGroupName == null)
-            {
-                throw new ArgumentNullException("resourceGroupName");
-            }
-            if (resourceGroupName != null && resourceGroupName.Length > 1000)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
-            if (Regex.IsMatch(resourceGroupName, "^[-\\w\\._]+$") == false)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
-            if (galleryItemId == null)
-            {
-                throw new ArgumentNullException("galleryItemId");
-            }
             if (parameters == null)
             {
                 throw new ArgumentNullException("parameters");
@@ -122,8 +99,6 @@ namespace Microsoft.AzureStack.Management
             {
                 invocationId = TracingAdapter.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("resourceGroupName", resourceGroupName);
-                tracingParameters.Add("galleryItemId", galleryItemId);
                 tracingParameters.Add("parameters", parameters);
                 TracingAdapter.Enter(invocationId, this, "CreateOrUpdateAsync", tracingParameters);
             }
@@ -135,10 +110,7 @@ namespace Microsoft.AzureStack.Management
             {
                 url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
             }
-            url = url + "/resourcegroups/";
-            url = url + Uri.EscapeDataString(resourceGroupName);
-            url = url + "/providers/Microsoft.Gallery.Admin/galleryitems/";
-            url = url + Uri.EscapeDataString(galleryItemId);
+            url = url + "/providers/Microsoft.Gallery.Admin/galleryitems";
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
             if (queryParameters.Count > 0)
@@ -163,7 +135,7 @@ namespace Microsoft.AzureStack.Management
             try
             {
                 httpRequest = new HttpRequestMessage();
-                httpRequest.Method = HttpMethod.Put;
+                httpRequest.Method = HttpMethod.Post;
                 httpRequest.RequestUri = new Uri(url);
                 
                 // Set Headers
@@ -286,9 +258,6 @@ namespace Microsoft.AzureStack.Management
         /// http://msdn.microsoft.com/en-us/library/windowsazure/XXXXX.aspx
         /// for more information)
         /// </summary>
-        /// <param name='resourceGroupName'>
-        /// Required. Your documentation here.
-        /// </param>
         /// <param name='galleryItemId'>
         /// Required. Your documentation here.
         /// </param>
@@ -299,21 +268,9 @@ namespace Microsoft.AzureStack.Management
         /// A standard service response including an HTTP status code and
         /// request ID.
         /// </returns>
-        public async Task<AzureOperationResponse> DeleteAsync(string resourceGroupName, string galleryItemId, CancellationToken cancellationToken)
+        public async Task<AzureOperationResponse> DeleteAsync(string galleryItemId, CancellationToken cancellationToken)
         {
             // Validate
-            if (resourceGroupName == null)
-            {
-                throw new ArgumentNullException("resourceGroupName");
-            }
-            if (resourceGroupName != null && resourceGroupName.Length > 1000)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
-            if (Regex.IsMatch(resourceGroupName, "^[-\\w\\._]+$") == false)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
             if (galleryItemId == null)
             {
                 throw new ArgumentNullException("galleryItemId");
@@ -326,7 +283,6 @@ namespace Microsoft.AzureStack.Management
             {
                 invocationId = TracingAdapter.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("galleryItemId", galleryItemId);
                 TracingAdapter.Enter(invocationId, this, "DeleteAsync", tracingParameters);
             }
@@ -338,8 +294,6 @@ namespace Microsoft.AzureStack.Management
             {
                 url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
             }
-            url = url + "/resourcegroups/";
-            url = url + Uri.EscapeDataString(resourceGroupName);
             url = url + "/providers/Microsoft.Gallery.Admin/galleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
@@ -435,9 +389,6 @@ namespace Microsoft.AzureStack.Management
         /// http://msdn.microsoft.com/en-us/library/windowsazure/XXXXX.aspx
         /// for more information)
         /// </summary>
-        /// <param name='resourceGroupName'>
-        /// Required. Your documentation here.
-        /// </param>
         /// <param name='galleryItemId'>
         /// Required. Your documentation here.
         /// </param>
@@ -447,21 +398,9 @@ namespace Microsoft.AzureStack.Management
         /// <returns>
         /// Your documentation here.
         /// </returns>
-        public async Task<GalleryItemGetResult> GetAsync(string resourceGroupName, string galleryItemId, CancellationToken cancellationToken)
+        public async Task<GalleryItemGetResult> GetAsync(string galleryItemId, CancellationToken cancellationToken)
         {
             // Validate
-            if (resourceGroupName == null)
-            {
-                throw new ArgumentNullException("resourceGroupName");
-            }
-            if (resourceGroupName != null && resourceGroupName.Length > 1000)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
-            if (Regex.IsMatch(resourceGroupName, "^[-\\w\\._]+$") == false)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
             if (galleryItemId == null)
             {
                 throw new ArgumentNullException("galleryItemId");
@@ -474,7 +413,6 @@ namespace Microsoft.AzureStack.Management
             {
                 invocationId = TracingAdapter.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("resourceGroupName", resourceGroupName);
                 tracingParameters.Add("galleryItemId", galleryItemId);
                 TracingAdapter.Enter(invocationId, this, "GetAsync", tracingParameters);
             }
@@ -486,8 +424,6 @@ namespace Microsoft.AzureStack.Management
             {
                 url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
             }
-            url = url + "/resourcegroups/";
-            url = url + Uri.EscapeDataString(resourceGroupName);
             url = url + "/providers/Microsoft.Gallery.Admin/galleryitems/";
             url = url + Uri.EscapeDataString(galleryItemId);
             List<string> queryParameters = new List<string>();
@@ -653,30 +589,15 @@ namespace Microsoft.AzureStack.Management
         /// http://msdn.microsoft.com/en-us/library/windowsazure/XXXXX.aspx
         /// for more information)
         /// </summary>
-        /// <param name='resourceGroupName'>
-        /// Required. Your documentation here.
-        /// </param>
         /// <param name='cancellationToken'>
         /// Cancellation token.
         /// </param>
         /// <returns>
         /// Your documentation here.
         /// </returns>
-        public async Task<GalleryItemListResult> ListAsync(string resourceGroupName, CancellationToken cancellationToken)
+        public async Task<GalleryItemListResult> ListAsync(CancellationToken cancellationToken)
         {
             // Validate
-            if (resourceGroupName == null)
-            {
-                throw new ArgumentNullException("resourceGroupName");
-            }
-            if (resourceGroupName != null && resourceGroupName.Length > 1000)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
-            if (Regex.IsMatch(resourceGroupName, "^[-\\w\\._]+$") == false)
-            {
-                throw new ArgumentOutOfRangeException("resourceGroupName");
-            }
             
             // Tracing
             bool shouldTrace = TracingAdapter.IsEnabled;
@@ -685,7 +606,6 @@ namespace Microsoft.AzureStack.Management
             {
                 invocationId = TracingAdapter.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
-                tracingParameters.Add("resourceGroupName", resourceGroupName);
                 TracingAdapter.Enter(invocationId, this, "ListAsync", tracingParameters);
             }
             
@@ -696,8 +616,6 @@ namespace Microsoft.AzureStack.Management
             {
                 url = url + Uri.EscapeDataString(this.Client.Credentials.SubscriptionId);
             }
-            url = url + "/resourcegroups/";
-            url = url + Uri.EscapeDataString(resourceGroupName);
             url = url + "/providers/Microsoft.Gallery.Admin/galleryitems";
             List<string> queryParameters = new List<string>();
             queryParameters.Add("api-version=" + Uri.EscapeDataString(this.Client.ApiVersion));
