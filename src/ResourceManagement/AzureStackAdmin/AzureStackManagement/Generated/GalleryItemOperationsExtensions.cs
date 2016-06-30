@@ -252,43 +252,5 @@ namespace Microsoft.AzureStack.Management
         {
             return operations.ListNextAsync(nextLink, CancellationToken.None);
         }
-        
-        /// <summary>
-        /// Your documentation here.  (see
-        /// http://msdn.microsoft.com/en-us/library/windowsazure/XXXXX.aspx
-        /// for more information)
-        /// </summary>
-        /// <param name='operations'>
-        /// Reference to the
-        /// Microsoft.AzureStack.Management.IGalleryItemOperations.
-        /// </param>
-        /// <returns>
-        /// Your documentation here.
-        /// </returns>
-        public static GalleryItemListResult ListWithoutResourceGroup(this IGalleryItemOperations operations)
-        {
-            return Task.Factory.StartNew((object s) => 
-            {
-                return ((IGalleryItemOperations)s).ListWithoutResourceGroupAsync();
-            }
-            , operations, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-        }
-        
-        /// <summary>
-        /// Your documentation here.  (see
-        /// http://msdn.microsoft.com/en-us/library/windowsazure/XXXXX.aspx
-        /// for more information)
-        /// </summary>
-        /// <param name='operations'>
-        /// Reference to the
-        /// Microsoft.AzureStack.Management.IGalleryItemOperations.
-        /// </param>
-        /// <returns>
-        /// Your documentation here.
-        /// </returns>
-        public static Task<GalleryItemListResult> ListWithoutResourceGroupAsync(this IGalleryItemOperations operations)
-        {
-            return operations.ListWithoutResourceGroupAsync(CancellationToken.None);
-        }
     }
 }

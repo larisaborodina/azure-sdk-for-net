@@ -115,18 +115,5 @@ namespace Microsoft.AzureStack.Management
         /// Your documentation here.
         /// </returns>
         Task<GalleryItemListResult> ListNextAsync(string nextLink, CancellationToken cancellationToken);
-        
-        /// <summary>
-        /// Your documentation here.  (see
-        /// http://msdn.microsoft.com/en-us/library/windowsazure/XXXXX.aspx
-        /// for more information)
-        /// </summary>
-        /// <param name='cancellationToken'>
-        /// Cancellation token.
-        /// </param>
-        /// <returns>
-        /// Your documentation here.
-        /// </returns>
-        Task<GalleryItemListResult> ListWithoutResourceGroupAsync(CancellationToken cancellationToken);
     }
 }
